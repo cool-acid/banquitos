@@ -2,7 +2,10 @@ package com.coolacid.banquitos;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 public class Mapa extends Activity {
 
@@ -18,5 +21,25 @@ public class Mapa extends Activity {
 		getMenuInflater().inflate(R.menu.mapa, menu);
 		return true;
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch (item.getItemId()) {
+			case R.id.center_position:
+				centerPosition();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item); 
+		}
+	}
+
+	private void centerPosition() {
+		Context context = getApplicationContext();
+		CharSequence text = "Centrando mapa";
+		int duration = Toast.LENGTH_SHORT;
+		Toast toast = Toast.makeText(context, text, duration);
+		toast.show();
+	}
+	
 
 }
