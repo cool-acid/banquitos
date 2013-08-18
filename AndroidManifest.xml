@@ -3,6 +3,10 @@
     package="com.coolacid.banquitos"
     android:versionCode="1"
     android:versionName="1.0" >
+    
+    <meta-data
+	    android:name="com.google.android.maps.v2.API_KEY"
+	    android:value="AIzaSyDSyuPNaDg-SmCkDsXgDqJeiWrAdm12vWQ"/>
 
     <uses-sdk
         android:minSdkVersion="11"
