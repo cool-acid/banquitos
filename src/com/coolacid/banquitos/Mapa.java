@@ -1,18 +1,25 @@
 package com.coolacid.banquitos;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.content.IntentSender;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.LocationClient;
 
-public class Mapa extends Activity {
+public class Mapa extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener{
 	
 	final int RQS_GooglePlayServices = 1;
+	final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+	LocationClient mLocationClient;
+	Location mCurrentLocation;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +29,21 @@ public class Mapa extends Activity {
 		int GooglePlayServicesAvailable = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
 		if(GooglePlayServicesAvailable != ConnectionResult.SUCCESS){
 			GooglePlayServicesUtil.getErrorDialog(GooglePlayServicesAvailable, this, RQS_GooglePlayServices).show();
+			finish();
 		}
+		mLocationClient = new LocationClient(this, this, this);
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		mLocationClient.connect();
+	}
+	
+	@Override
+	protected void onStop() {
+		mLocationClient.disconnect();
+		super.onStop();
 	}
 
 	@Override
@@ -44,11 +65,43 @@ public class Mapa extends Activity {
 	}
 
 	private void centerPosition() {
-		Context context = getApplicationContext();
-		CharSequence text = "Centrando mapa";
-		int duration = Toast.LENGTH_SHORT;
-		Toast toast = Toast.makeText(context, text, duration);
-		toast.show();
+		mCurrentLocation = mLocationClient.getLastLocation();
+		Toast.makeText(this, String.valueOf(mCurrentLocation.getLatitude()) + ' ' + String.valueOf(mCurrentLocation.getLongitude()), Toast.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void onConnected(Bundle arg0) {
+		Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onDisconnected() {
+		Toast.makeText(this, "Disconnected", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution()) {
+            try {
+                // Start an Activity that tries to resolve the error
+                connectionResult.startResolutionForResult(
+                        this,
+                        CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                /*
+                 * Thrown if Google Play services canceled the original
+                 * PendingIntent
+                 */
+            } catch (IntentSender.SendIntentException e) {
+                // Log the error
+                e.printStackTrace();
+            }
+        } else {
+            /*
+             * If no resolution is available, display a dialog to the
+             * user with the error.
+             */
+        	;
+        }
 	}
 	
 
