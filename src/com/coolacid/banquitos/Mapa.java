@@ -18,6 +18,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 public class Mapa extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, 
@@ -67,10 +68,11 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 	@Override
 	protected void onPause() {
 		SharedPreferences.Editor editor = sharedPref.edit();
+		CameraPosition posicionCamara = mapa.getCameraPosition();
 		if (mapa != null){
-			editor.putString("lat", "0.0");
-			editor.putString("lng", "0.0");
-			editor.putInt("zoom", 1);
+			editor.putString("lat", String.valueOf(posicionCamara.target.latitude));
+			editor.putString("lng", String.valueOf(posicionCamara.target.longitude));
+			editor.putInt("zoom", (int) posicionCamara.zoom);
 			editor.commit();
 		}
 		super.onPause();
