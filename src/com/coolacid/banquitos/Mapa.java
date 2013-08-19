@@ -84,19 +84,8 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch (item.getItemId()) {
-			case R.id.center_position:
-				centerPosition();
-				return true;
 			default:
 				return super.onOptionsItemSelected(item); 
-		}
-	}
-
-	private void centerPosition() {
-		Location lastLocation = mLocationClient.getLastLocation();
-		LatLng lastLocationLatLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-		if(mapa != null){
-			mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocationLatLng, (float) 15.0));
 		}
 	}
 
