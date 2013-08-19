@@ -14,6 +14,8 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 
 public class Mapa extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, 
 											  GooglePlayServicesClient.OnConnectionFailedListener,
@@ -26,6 +28,7 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
     private static final long UPDATE_INTERVAL = MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
     private static final int FASTEST_INTERVAL_IN_SECONDS = 1;
     private static final long FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
+    private GoogleMap mapa;
 
 	LocationClient mLocationClient;
 	Location mCurrentLocation;
@@ -46,6 +49,7 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 		mLocationRequest.setInterval(UPDATE_INTERVAL);
 		mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
 		mLocationClient = new LocationClient(this, this, this);
+		mapa = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 	}
 	
 	@Override
@@ -84,7 +88,6 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 	}
 
 	private void centerPosition() {
-		mCurrentLocation = mLocationClient.getLastLocation();
 		Toast.makeText(this, String.valueOf(mCurrentLocation.getLatitude()) + ' ' + String.valueOf(mCurrentLocation.getLongitude()), Toast.LENGTH_LONG).show();
 	}
 
@@ -126,7 +129,11 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 
 	@Override
 	public void onLocationChanged(Location location) {
-		mCurrentLocation.set(location);
+		mCurrentLocation = mLocationClient.getLastLocation();
+		String msg = "Updated Location: " +
+                Double.toString(location.getLatitude()) + "," +
+                Double.toString(location.getLongitude());
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
 	
 
