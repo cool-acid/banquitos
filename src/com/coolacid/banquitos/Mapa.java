@@ -52,6 +52,9 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 		mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
 		mLocationClient = new LocationClient(this, this, this);
 		mapa = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+		if (mapa != null){
+			mapa.setMyLocationEnabled(true);
+		}
 	}
 	
 	@Override
