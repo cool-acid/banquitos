@@ -14,8 +14,10 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 public class Mapa extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, 
 											  GooglePlayServicesClient.OnConnectionFailedListener,
@@ -88,7 +90,11 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 	}
 
 	private void centerPosition() {
-		Toast.makeText(this, String.valueOf(mCurrentLocation.getLatitude()) + ' ' + String.valueOf(mCurrentLocation.getLongitude()), Toast.LENGTH_LONG).show();
+		Location lastLocation = mLocationClient.getLastLocation();
+		LatLng lastLocationLatLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+		if(mapa != null){
+			mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocationLatLng, (float) 15.0));
+		}
 	}
 
 	@Override
@@ -129,7 +135,6 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 
 	@Override
 	public void onLocationChanged(Location location) {
-		mCurrentLocation = mLocationClient.getLastLocation();
 		String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
