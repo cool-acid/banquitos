@@ -30,6 +30,7 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 	LocationClient mLocationClient;
 	Location mCurrentLocation;
 	LocationRequest mLocationRequest;
+	SharedPreferences sharedPref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 			finish();
 		}
 		mLocationClient = new LocationClient(this, this, this);
-		SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+		sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 		mapa = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		if (mapa != null){
 			mapa.setMyLocationEnabled(true);
@@ -61,6 +62,18 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 	protected void onStop() {
 		mLocationClient.disconnect();
 		super.onStop();
+	}
+	
+	@Override
+	protected void onPause() {
+		SharedPreferences.Editor editor = sharedPref.edit();
+		if (mapa != null){
+			editor.putString("lat", "0.0");
+			editor.putString("lng", "0.0");
+			editor.putInt("zoom", 1);
+			editor.commit();
+		}
+		super.onPause();
 	}
 	
 	@Override
