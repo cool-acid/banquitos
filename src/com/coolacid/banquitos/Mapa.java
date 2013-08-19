@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -14,8 +15,11 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
 
 public class Mapa extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, 
 											  GooglePlayServicesClient.OnConnectionFailedListener{
@@ -27,6 +31,7 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 	LocationClient mLocationClient;
 	Location mCurrentLocation;
 	LocationRequest mLocationRequest;
+	SharedPreferences sharedPref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +44,12 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 			finish();
 		}
 		mLocationClient = new LocationClient(this, this, this);
+		sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 		mapa = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		if (mapa != null){
 			mapa.setMyLocationEnabled(true);
+			LatLng pastCenter = new LatLng(new Double(sharedPref.getString("lat", "19.432681")), new Double(sharedPref.getString("lng", "-99.13332")));
+			mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(pastCenter, new Float(sharedPref.getInt("zoom", 15))));
 		}
 	}
 	
@@ -55,6 +63,19 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 	protected void onStop() {
 		mLocationClient.disconnect();
 		super.onStop();
+	}
+	
+	@Override
+	protected void onPause() {
+		SharedPreferences.Editor editor = sharedPref.edit();
+		CameraPosition posicionCamara = mapa.getCameraPosition();
+		if (mapa != null){
+			editor.putString("lat", String.valueOf(posicionCamara.target.latitude));
+			editor.putString("lng", String.valueOf(posicionCamara.target.longitude));
+			editor.putInt("zoom", (int) posicionCamara.zoom);
+			editor.commit();
+		}
+		super.onPause();
 	}
 	
 	@Override
