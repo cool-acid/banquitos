@@ -99,13 +99,12 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 
 	@Override
 	public void onConnected(Bundle arg0) {
-		Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
 		mLocationClient.requestLocationUpdates(mLocationRequest, this);
 	}
 
 	@Override
 	public void onDisconnected() {
-		Toast.makeText(this, "Disconnected", Toast.LENGTH_SHORT).show();
+		;
 	}
 
 	@Override
@@ -135,10 +134,7 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 
 	@Override
 	public void onLocationChanged(Location location) {
-		String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+		;
 	}
 	
 
