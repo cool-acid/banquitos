@@ -14,22 +14,14 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
 
 public class Mapa extends Activity implements GooglePlayServicesClient.ConnectionCallbacks, 
-											  GooglePlayServicesClient.OnConnectionFailedListener,
-											  com.google.android.gms.location.LocationListener{
+											  GooglePlayServicesClient.OnConnectionFailedListener{
 	
 	final int RQS_GooglePlayServices = 1;
 	final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-	private static final int MILLISECONDS_PER_SECOND = 1000;
-    public static final int UPDATE_INTERVAL_IN_SECONDS = 5;
-    private static final long UPDATE_INTERVAL = MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
-    private static final int FASTEST_INTERVAL_IN_SECONDS = 1;
-    private static final long FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
     private GoogleMap mapa;
 
 	LocationClient mLocationClient;
@@ -46,10 +38,6 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 			GooglePlayServicesUtil.getErrorDialog(GooglePlayServicesAvailable, this, RQS_GooglePlayServices).show();
 			finish();
 		}
-		mLocationRequest = LocationRequest.create();
-		mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-		mLocationRequest.setInterval(UPDATE_INTERVAL);
-		mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
 		mLocationClient = new LocationClient(this, this, this);
 		mapa = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		if (mapa != null){
@@ -88,17 +76,7 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 				return super.onOptionsItemSelected(item); 
 		}
 	}
-
-	@Override
-	public void onConnected(Bundle arg0) {
-		mLocationClient.requestLocationUpdates(mLocationRequest, this);
-	}
-
-	@Override
-	public void onDisconnected() {
-		;
-	}
-
+	
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
         if (connectionResult.hasResolution()) {
@@ -125,9 +103,15 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 	}
 
 	@Override
-	public void onLocationChanged(Location location) {
-		;
+	public void onConnected(Bundle arg0) {
+		// TODO Auto-generated method stub
+		
 	}
-	
+
+	@Override
+	public void onDisconnected() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
