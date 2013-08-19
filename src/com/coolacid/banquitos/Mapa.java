@@ -126,10 +126,7 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 
 	@Override
 	public void onLocationChanged(Location location) {
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+		mCurrentLocation.set(location);
 	}
 	
 
