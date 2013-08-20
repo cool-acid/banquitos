@@ -1,6 +1,7 @@
 package com.coolacid.banquitos;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -194,7 +195,8 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 						    Marker marcador = mapa.addMarker(
 						    		new MarkerOptions().position(
 						    				new LatLng(latlon.getDouble(0), latlon.getDouble(1))
-						    		)
+						    		).title(sucursal.getString("banco").toUpperCase() + ": " + sucursal.getString("nombre"))
+						    		.snippet(sucursal.getJSONObject("direccion").getString("calle"))
 						    );
 						    marcadores.add(marcador);
 						}
