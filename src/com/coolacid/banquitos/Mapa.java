@@ -27,6 +27,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -197,6 +198,8 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 						    				new LatLng(latlon.getDouble(0), latlon.getDouble(1))
 						    		).title(sucursal.getString("banco").toUpperCase() + ": " + sucursal.getString("nombre"))
 						    		.snippet(sucursal.getJSONObject("direccion").getString("calle"))
+						    		.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_banamex))
+						    		.anchor((float)0.5, (float)0.5)
 						    );
 						    marcadores.add(marcador);
 						}
