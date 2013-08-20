@@ -198,7 +198,7 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 						    				new LatLng(latlon.getDouble(0), latlon.getDouble(1))
 						    		).title(sucursal.getString("banco").toUpperCase() + ": " + sucursal.getString("nombre"))
 						    		.snippet(sucursal.getJSONObject("direccion").getString("calle"))
-						    		.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_banamex))
+						    		.icon(BitmapDescriptorFactory.fromResource(getResources().getIdentifier("icon_"+sucursal.getString("banco"), "drawable", getApplicationContext().getPackageName())))
 						    		.anchor((float)0.5, (float)0.5)
 						    );
 						    marcadores.add(marcador);
