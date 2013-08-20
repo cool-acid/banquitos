@@ -1,5 +1,7 @@
 package com.coolacid.banquitos;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +47,7 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 	SharedPreferences sharedPref;
 	
 	BanquitosAPI API;
+	ArrayList<Marker> marcadores;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 			mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(pastCenter, Float.valueOf(sharedPref.getInt("zoom", 15))));
 		}
 		API = new BanquitosAPI();
+		marcadores = new ArrayList<Marker>();
 	}
 	
 	@Override
@@ -177,17 +181,22 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 				// TODO Auto-generated method stub
 				try {
 					if (resp.getInt("resultados")>0) {
+						for (Marker marcador: marcadores) {
+							marcador.remove();
+						}
+						marcadores.clear();
 						JSONArray sucursales = resp.getJSONArray("sucursales");
 						for (int i = 0; i < sucursales.length(); i++) {
 						    JSONObject sucursal = sucursales.getJSONObject(i);
 						    JSONArray latlon = sucursal.getJSONArray("latlon");
 						    Log.i("MYTAG", sucursal.toString());
 						    // Ponemos el marcador
-						    mapa.addMarker(
+						    Marker marcador = mapa.addMarker(
 						    		new MarkerOptions().position(
 						    				new LatLng(latlon.getDouble(0), latlon.getDouble(1))
 						    		)
 						    );
+						    marcadores.add(marcador);
 						}
 					}else{
 						Toast.makeText(getApplicationContext(), "No se han encontrado bancos en esta area.", Toast.LENGTH_SHORT).show();
