@@ -71,6 +71,12 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 		}
 		API = new BanquitosAPI();
 		marcadores = new ArrayList<Marker>();
+		try {
+			refreshMap();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
