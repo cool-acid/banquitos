@@ -26,6 +26,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -173,10 +175,20 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 			@Override
 			public void onSuccess(int arg0, JSONObject resp) {
 				// TODO Auto-generated method stub
-				Log.i("MYTAG", resp.toString());
 				try {
 					if (resp.getInt("resultados")>0) {
-						;
+						JSONArray sucursales = resp.getJSONArray("sucursales");
+						for (int i = 0; i < sucursales.length(); i++) {
+						    JSONObject sucursal = sucursales.getJSONObject(i);
+						    JSONArray latlon = sucursal.getJSONArray("latlon");
+						    Log.i("MYTAG", sucursal.toString());
+						    // Ponemos el marcador
+						    mapa.addMarker(
+						    		new MarkerOptions().position(
+						    				new LatLng(latlon.getDouble(0), latlon.getDouble(1))
+						    		)
+						    );
+						}
 					}else{
 						Toast.makeText(getApplicationContext(), "No se han encontrado bancos en esta area.", Toast.LENGTH_SHORT).show();
 					}
