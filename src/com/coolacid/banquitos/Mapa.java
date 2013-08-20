@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -83,12 +84,14 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 	protected void onStart() {
 		super.onStart();
 		mLocationClient.connect();
+		EasyTracker.getInstance(this).activityStart(this);
 	}
 	
 	@Override
 	protected void onStop() {
 		mLocationClient.disconnect();
 		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
 	}
 	
 	@Override
