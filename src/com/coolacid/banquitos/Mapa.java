@@ -59,8 +59,8 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 		mapa = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 		if (mapa != null){
 			mapa.setMyLocationEnabled(true);
-			LatLng pastCenter = new LatLng(new Double(sharedPref.getString("lat", "19.432681")), new Double(sharedPref.getString("lng", "-99.13332")));
-			mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(pastCenter, new Float(sharedPref.getInt("zoom", 15))));
+			LatLng pastCenter = new LatLng(Double.valueOf(sharedPref.getString("lat", "19.432681")), Double.valueOf(sharedPref.getString("lng", "-99.13332")));
+			mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(pastCenter, Float.valueOf(sharedPref.getInt("zoom", 15))));
 		}
 		API = new BanquitosAPI();
 	}
