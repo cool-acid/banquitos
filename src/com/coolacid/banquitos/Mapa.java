@@ -1,12 +1,10 @@
 package com.coolacid.banquitos;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -33,7 +31,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -173,7 +170,7 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 	}
 	
 	private void refreshMap() throws JSONException{
-		Toast.makeText(this, "Cargando mapas en esta area", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Cargando sucursales en esta area", Toast.LENGTH_SHORT).show();
 		CameraPosition posicionCamara = mapa.getCameraPosition();
 		String lat = String.valueOf(posicionCamara.target.latitude);
 		String lng = String.valueOf(posicionCamara.target.longitude);
@@ -200,7 +197,6 @@ public class Mapa extends Activity implements GooglePlayServicesClient.Connectio
 						for (int i = 0; i < sucursales.length(); i++) {
 						    JSONObject sucursal = sucursales.getJSONObject(i);
 						    JSONArray latlon = sucursal.getJSONArray("latlon");
-						    Log.i("MYTAG", sucursal.toString());
 						    // Ponemos el marcador
 						    Marker marcador = mapa.addMarker(
 						    		new MarkerOptions().position(
