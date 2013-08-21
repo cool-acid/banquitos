@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">Banquitos</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="action_refresh">Buscar bancos en esta area</string>
 
 </resources>
